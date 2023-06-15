@@ -5,16 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.abdygulov_chyngyz_4_month.R
 import com.example.abdygulov_chyngyz_4_month.databinding.FragmentHomeBinding
+import com.example.abdygulov_chyngyz_4_month.model.Task
+import com.example.abdygulov_chyngyz_4_month.ui.home.adapter.TaskAdapter
+import com.example.abdygulov_chyngyz_4_month.ui.task.TaskFragment
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private val adapter = TaskAdapter()
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -28,10 +32,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFragmentResultListener(TaskFragment.TASK_REQUEST) { _, bundle ->
+            val data = bundle.getSerializable(TaskFragment.TASK_KEY)as Task
+            adapter.addTask(data)
+        }
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
         }
+        binding.recyclerView.adapter = adapter
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

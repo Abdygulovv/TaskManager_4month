@@ -34,5 +34,10 @@
         android:name="com.example.abdygulov_chyngyz_4_month.ui.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.example.abdygulov_chyngyz_4_month.ui.onboarding.OnBoardingFragment"
+        android:label="Boarding"
+        tools:layout="@layout/fragment_on_boarding" />
 
 </navigation>
