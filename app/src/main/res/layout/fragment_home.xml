@@ -14,7 +14,8 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_edit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/blue"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
