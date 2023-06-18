@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.abdygulov_chyngyz_4_month.R
+import com.example.abdygulov_chyngyz_4_month.data.local.Pref
 import com.example.abdygulov_chyngyz_4_month.databinding.FragmentOnBoardingBinding
 import com.example.abdygulov_chyngyz_4_month.ui.onboarding.adapter.OnBoardingAdapter
 
@@ -15,6 +16,10 @@ class OnBoardingFragment : Fragment() {
     private lateinit var binding: FragmentOnBoardingBinding
 
     private val adapter = OnBoardingAdapter(this:: onClick)
+
+    private val pref: Pref by lazy {
+        Pref(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +36,7 @@ class OnBoardingFragment : Fragment() {
     }
 
     private fun onClick(){
+        pref.saveSeen()
         findNavController().navigateUp()
 
     }
