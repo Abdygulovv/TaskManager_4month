@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         if (!pref.isUserSeen())
             navController.navigate(R.id.onBoardingFragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -41,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_notifications,
                 R.id.taskFragment,
                 R.id.profileFragment
+
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

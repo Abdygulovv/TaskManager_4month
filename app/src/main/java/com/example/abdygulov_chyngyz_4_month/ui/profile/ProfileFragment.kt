@@ -23,8 +23,8 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            if (it.resultCode == Activity.RESULT_OK && it.data != null){
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK && it.data != null) {
                 val photoUri = it.data?.data
                 pref.saveImage(photoUri.toString())
                 binding.profileImage.loadImage(photoUri.toString())

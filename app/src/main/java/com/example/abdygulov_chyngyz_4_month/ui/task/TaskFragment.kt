@@ -8,26 +8,41 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.example.abdygulov_chyngyz_4_month.App
 import com.example.abdygulov_chyngyz_4_month.R
 import com.example.abdygulov_chyngyz_4_month.databinding.FragmentTaskBinding
 import com.example.abdygulov_chyngyz_4_month.model.Task
 
 class TaskFragment : Fragment() {
 
-    private lateinit var binding: FragmentTaskBinding
+    private var _binding: FragmentTaskBinding? = null
+    private val binding get() = _binding!!
+    lateinit var task: Task
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTaskBinding.inflate(inflater, container, false)
+        _binding = FragmentTaskBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnSave.setOnClickListener {
-            onSave()
+        if (arguments == null) {
+            binding.btnSave.setOnClickListener {
+                onSave()
+            }
+        }else{
+            task = requireArguments().getSerializable("TASK") as Task
+            binding.etTitle.setText(task.title)
+            binding.etDescription.setText(task.description)
+            binding.btnSave.text = (getString(R.string.update))
+
+            binding.btnSave.setOnClickListener {
+                onUpdate()
+            }
         }
     }
 
@@ -36,14 +51,22 @@ class TaskFragment : Fragment() {
             title = binding.etTitle.text.toString(),
             description = binding.etDescription.text.toString()
         )
-        setFragmentResult(TASK_REQUEST, bundleOf(TASK_KEY to data))
+        App.db.taskDao().insert(data)
         findNavController().navigateUp()
-
     }
 
-    companion object{
-        const val TASK_REQUEST = "task.result"
-        const val TASK_KEY = "task.result"
+    private fun onUpdate() {
+        val data = Task(
+            id = task.id,
+            title = binding.etTitle.text.toString(),
+            description = binding.etDescription.text.toString()
+        )
+        App.db.taskDao().update(data)
+        findNavController().navigateUp()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

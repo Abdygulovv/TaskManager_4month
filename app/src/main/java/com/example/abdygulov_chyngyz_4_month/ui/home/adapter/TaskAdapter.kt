@@ -1,18 +1,20 @@
 package com.example.abdygulov_chyngyz_4_month.ui.home.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Adapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.abdygulov_chyngyz_4_month.databinding.ItemTaskBinding
 import com.example.abdygulov_chyngyz_4_month.model.Task
 
-class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
-
+class TaskAdapter(private val onLongClickTask: (Task) -> Unit,private val onClickTask: (Bundle) -> Unit) :
+    RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val list = arrayListOf<Task>()
-    fun addTask(task: Task) {
-        list.add(0, task)
+
+    fun setTasks(tasks: List<Task>) {
+        list.clear()
+        list.addAll(tasks)
         notifyDataSetChanged()
     }
 
@@ -26,18 +28,25 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         )
     }
 
-    override fun getItemCount(): Int = list.size
-
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.binds(list[position])
     }
 
+    override fun getItemCount(): Int = list.size
 
     inner class TaskViewHolder(private val binding: ItemTaskBinding) : ViewHolder(binding.root) {
-        fun bind(task: Task) = with(binding) {
+        fun binds(task: Task) = with(binding) {
             tvTitle.text = task.title
             tvDescription.text = task.description
+            itemView.setOnLongClickListener {
+                onLongClickTask(task)
+                false
+            }
+            itemView.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putSerializable("TASK",task)
+                onClickTask(bundle)
+            }
         }
-
     }
 }
