@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateTasksList()
+        getTasksList()
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
@@ -51,19 +51,17 @@ class HomeFragment : Fragment() {
         dialogBuilder.setTitle(getString(R.string.you_wont_delete))
             .setMessage(getString(R.string.recovery_is_not_possible))
             .setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface, _: Int ->
-                // Обработка нажатия кнопки "OK"
                 App.db.taskDao().delete(task)
-                updateTasksList()
+                getTasksList()
                 dialog.dismiss()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog: DialogInterface, _: Int ->
-                // Обработка нажатия кнопки "Отмена"
                 dialog.dismiss()
             }
         dialogBuilder.show()
     }
 
-    private fun updateTasksList() {
+    private fun getTasksList() {
         val list = App.db.taskDao().getAll()
         adapter.setTasks(list)
     }

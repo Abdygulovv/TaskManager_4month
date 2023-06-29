@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.example.abdygulov_chyngyz_4_month.App
 import com.example.abdygulov_chyngyz_4_month.R
@@ -17,8 +15,7 @@ class TaskFragment : Fragment() {
 
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
-    lateinit var task: Task
-
+    private var task: Task? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,14 +27,14 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments == null) {
+        task = arguments?.getSerializable(TASK_KEY) as Task?
+        if (task == null) {
             binding.btnSave.setOnClickListener {
                 onSave()
             }
-        }else{
-            task = requireArguments().getSerializable("TASK") as Task
-            binding.etTitle.setText(task.title)
-            binding.etDescription.setText(task.description)
+        } else {
+            binding.etTitle.setText(task?.title)
+            binding.etDescription.setText(task?.description)
             binding.btnSave.text = (getString(R.string.update))
 
             binding.btnSave.setOnClickListener {
@@ -55,9 +52,13 @@ class TaskFragment : Fragment() {
         findNavController().navigateUp()
     }
 
+    companion object {
+        const val TASK_KEY = "task.result"
+    }
+
     private fun onUpdate() {
         val data = Task(
-            id = task.id,
+            id = task?.id,
             title = binding.etTitle.text.toString(),
             description = binding.etDescription.text.toString()
         )
