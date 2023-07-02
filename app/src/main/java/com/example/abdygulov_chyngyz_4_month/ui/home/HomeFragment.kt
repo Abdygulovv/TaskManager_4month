@@ -17,7 +17,7 @@ import com.example.abdygulov_chyngyz_4_month.ui.home.adapter.TaskAdapter
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private val adapter = TaskAdapter(this::onLongClickTask,this::onClickTask)
+    private val adapter = TaskAdapter(this::onLongClickTask, this::onClickTask)
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -41,8 +41,8 @@ class HomeFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
-    private fun onClickTask(bundle: Bundle){
-        findNavController().navigate(R.id.taskFragment,bundle)
+    private fun onClickTask(bundle: Bundle) {
+        findNavController().navigate(R.id.taskFragment, bundle)
     }
 
     private fun onLongClickTask(task: Task) {
